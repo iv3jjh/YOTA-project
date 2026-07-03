@@ -13,18 +13,18 @@ def get_db_connection():
     return conn
 
 # Aggiungiamo methods=['GET', 'POST'] per permettere al form di inviare dati
-#@app.route('/', methods=['GET', 'POST'])
-#def home():
-  #  if request.method == 'POST':
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
         # Qui cattureremo i dati inviati dal form
-   #     nominativo_inserito = request.form.get('nominativo')
-    #    password_inserita = request.form.get('password')
+        nominativo_inserito = request.form.get('nominativo')
+        password_inserita = request.form.get('password')
         
         # Per ora stampiamo solo un messaggio di test
-     #   return f"<h1>Test Login</h1><p>Hai provato ad accedere come: {nominativo_inserito}</p>"
+        return f"<h1>Test Login</h1><p>Hai provato ad accedere come: {nominativo_inserito}</p>"
     
     # Se il metodo è GET (l'utente sta solo visitando la pagina), mostriamo l'HTML
-render_template('fpage.html')
+    return render_template('fpage.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
