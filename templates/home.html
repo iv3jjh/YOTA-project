@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>Login - DYM Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0052;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .header-superiore {
+            background-color: rgb(20, 151, 228);; /* Il colore di sfondo della riga (blu scuro) */
+            color: white;              /* Il colore del testo (bianco) */
+            padding: 20px 40px;        /* Spazio interno: 20px sopra/sotto (dà l'altezza), 40px ai lati */
+            display: flex;             /* Allinea gli elementi internamente */
+            justify-content: space-between; /* Spinge il titolo a sinistra e altri eventuali bottoni a destra */
+            align-items: center;       /* Centra il testo verticalmente */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Aggiunge una leggera ombra sotto la barra */
+        }
+        .header-superiore h1 {
+            margin: 0; 
+            font-size: 24px;
+        }
+        .login-container {
+            background-color: rgb(20, 151, 228);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        .contenuto-principale {
+            background-color: #0c0052; /* Colore di sfondo della pagina */
+            color: white; /* Colore del testo */
+            padding: 40px; /* Dà un po' di respiro ai contenuti dai bordi dello schermo */
+            text-align: center;
+        }
+        h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #000000;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-superiore">
+        <h1>Welcome {{nominativo}}</h1>
+    </div>
+    <div class="contenuto-principale">
+        <h2>Benvenuto nell'Area Operativa</h2>
+        <p>Il resto dello schermo prende automaticamente il colore grigio chiaro impostato nel tag body.</p>
+        
+        <!-- Qui metteremo la tabella per l'ADIF -->
+    </div>
+</body>
+</html>
