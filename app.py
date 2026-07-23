@@ -38,7 +38,8 @@ def login():
             session['ruolo'] = utente[1]
             return redirect(url_for('dashboard'))
         else:
-            errore = "Nominativo o password errati."
+            errore ="Username or password incorrect."
+            return render_template('login.html', errore=errore)
             
     return render_template('login.html', errore=errore)
 
@@ -46,8 +47,7 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     if 'nominativo' not in session:
-        errore ="Username or password incorrect."
-        return render_template('login.html', errore=errore)
+        return redirect(url_for('login'))
 
     return f"""
         <h1>Benvenuto {session['nominativo']}! 📻</h1>
