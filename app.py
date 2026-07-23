@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import os
 from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Importiamo dal nostro nuovo modulo!
 from database import get_db_connection, init_db
@@ -10,6 +11,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "chiave_di_riserva")
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 # Esegue il controllo del DB all'avvio dell'app usando la funzione importata
 init_db()
@@ -34,6 +36,8 @@ def login():
         conn.close()
         
         if utente and check_password_hash(utente[0], password_inserita):
+            session.permanent = True
+
             session['nominativo'] = nominativo_inserito
             session['ruolo'] = utente[1]
             return redirect(url_for('dashboard'))
