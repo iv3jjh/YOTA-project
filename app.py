@@ -45,12 +45,10 @@ def login():
 # --- ROTTA DELLA DASHBOARD ---
 @app.route('/dashboard')
 def dashboard():
-    if 'nominativo' not in session:{
-        return f"""
-            <p>Username or password incorrect.</p>
-        """
-        return redirect(url_for('login'))
-    }   
+    if 'nominativo' not in session:
+        errore ="Username or password incorrect."
+        return render_template('login.html', errore=errore)
+
     return f"""
         <h1>Benvenuto {session['nominativo']}! 📻</h1>
         <p>Il tuo ruolo di sistema è: <strong>{session['ruolo']}</strong></p>
