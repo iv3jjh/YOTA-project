@@ -49,11 +49,7 @@ def dashboard():
     if 'nominativo' not in session:
         return redirect(url_for('login'))
 
-    return f"""
-        <h1>Benvenuto {session['nominativo']}! 📻</h1>
-        <p>Il tuo ruolo di sistema è: <strong>{session['ruolo']}</strong></p>
-        <a href="/logout">Esci (Logout)</a>
-    """
+    return redirect(url_for('home'))
 
 # --- ROTTA DI LOGOUT ---
 @app.route('/logout')
