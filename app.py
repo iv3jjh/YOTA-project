@@ -49,7 +49,7 @@ def dashboard():
     if 'nominativo' not in session:
         return redirect(url_for('login'))
 
-    return redirect(url_for('home.html'))
+    return render_template('home.html', nominativo=session['nominativo'])
 
 # --- ROTTA DI LOGOUT ---
 @app.route('/logout')
