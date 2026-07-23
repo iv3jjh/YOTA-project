@@ -54,6 +54,12 @@
 
     <div class="login-container">
         <h2>📻 DYM Manager</h2>
+        <!-- Inizio controllo errore -->
+        {% if errore %}
+            <div style="background-color: #ffdddd; color: #d8000c; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #d8000c;">
+                ⚠️ {{ errore }}
+            </div>
+        {% endif %}
         <form action="/" method="POST">
             <label for="nominativo">Personal Call</label>
             <input type="text" id="nominativo" name="nominativo" placeholder="Insert personal call" required>
@@ -64,6 +70,5 @@
             <button type="submit">Login</button>
         </form>
     </div>
-
 </body>
 </html>
