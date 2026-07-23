@@ -1,30 +1,64 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import os
-import psycopg2
+from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
+
+# Importiamo dal nostro nuovo modulo!
+from database import get_db_connection, init_db
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "chiave_di_riserva")
 
-def get_db_connection():
-    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-    return conn
+# Esegue il controllo del DB all'avvio dell'app usando la funzione importata
+init_db()
 
-# Aggiungiamo methods=['GET', 'POST'] per permettere al form di inviare dati
+# --- ROTTA DI LOGIN ---
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def login():
+    if 'nominativo' in session:
+        return redirect(url_for('dashboard'))
+
+    errore = None
+    
     if request.method == 'POST':
-        # Qui cattureremo i dati inviati dal form
-        nominativo_inserito = request.form.get('nominativo')
+        nominativo_inserito = request.form.get('nominativo').upper()
         password_inserita = request.form.get('password')
         
-        # Per ora stampiamo solo un messaggio di test
-        return f"<h1>Test Login</h1><p>Hai provato ad accedere come: {nominativo_inserito}</p>"
-    
-    # Se il metodo è GET (l'utente sta solo visitando la pagina), mostriamo l'HTML
-    return render_template('fpage.html')
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT password_hash, ruolo FROM utenti WHERE nominativo_privato = %s', (nominativo_inserito,))
+        utente = cur.fetchone()
+        cur.close()
+        conn.close()
+        
+        if utente and check_password_hash(utente[0], password_inserita):
+            session['nominativo'] = nominativo_inserito
+            session['ruolo'] = utente[1]
+            return redirect(url_for('dashboard'))
+        else:
+            errore = "Nominativo o password errati."
+            
+    return render_template('login.html', errore=errore)
+
+# --- ROTTA DELLA DASHBOARD ---
+@app.route('/dashboard')
+def dashboard():
+    if 'nominativo' not in session:
+        return redirect(url_for('login'))
+        
+    return f"""
+        <h1>Benvenuto {session['nominativo']}! 📻</h1>
+        <p>Il tuo ruolo di sistema è: <strong>{session['ruolo']}</strong></p>
+        <a href="/logout">Esci (Logout)</a>
+    """
+
+# --- ROTTA DI LOGOUT ---
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
